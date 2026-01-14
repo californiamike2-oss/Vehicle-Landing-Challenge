@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Blitz Contest</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
@@ -11,7 +13,8 @@
         input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
         textarea { height: 120px; resize: vertical; }
         button { width: 100%; background: #2e7d32; color: white; border: none; padding: 15px; border-radius: 6px; font-size: 18px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #1b5e20; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        button:hover:not(:disabled) { background: #1b5e20; }
         .footer { font-size: 12px; color: #777; text-align: center; margin-top: 10px; }
     </style>
 </head>
@@ -37,7 +40,9 @@
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw3yfIKVo7_fMIi8wTNNobq3QQrP82g3obdp2v0wR4EBqpFb2IEXo5_NZAGAqVxQKmK/exec';
+    // PASTE YOUR NEW DEPLOYMENT URL BELOW
+    const scriptURL = 'PASTE_YOUR_EXEC_URL_HERE'; 
+    
     const form = document.getElementById('contestForm');
     const btn = document.getElementById('submitBtn');
 
@@ -46,28 +51,31 @@
         btn.disabled = true;
         btn.innerText = 'Sending...';
 
-        // Prepare data including the current objection for the sheet
-        const formData = new FormData(form);
-        formData.append('objection_type', document.getElementById('objection').innerText);
-        formData.append('timestamp', new Date().toLocaleString());
+        // We use URLSearchParams to ensure the Google Script reads the data correctly
+        const params = new URLSearchParams();
+        params.append('name', document.getElementById('name').value);
+        params.append('response', document.getElementById('response').value);
+        params.append('objection_type', document.getElementById('objection').innerText);
 
-        fetch(scriptURL, { method: 'POST', body: formData})
-            .then(response => {
-                alert('Success! Your response has been logged for the 4pm draw.');
-                form.reset();
-                btn.disabled = false;
-                btn.innerText = 'Submit to Blitz Leaderboard';
-            })
-            .catch(error => {
-                alert('Error! Check your connection or Script URL.');
-                btn.disabled = false;
-                btn.innerText = 'Submit to Blitz Leaderboard';
-            });
+        fetch(scriptURL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: params
+        })
+        .then(() => {
+            alert('Success! Your response has been logged for the 4pm draw.');
+            form.reset();
+            btn.disabled = false;
+            btn.innerText = 'Submit to Blitz Leaderboard';
+        })
+        .catch(error => {
+            console.error('Error!', error);
+            alert('Error! Submission failed. Check your internet or script URL.');
+            btn.disabled = false;
+            btn.innerText = 'Submit to Blitz Leaderboard';
+        });
     });
 </script>
-
-</body>
-</html>
 
 </body>
 </html>
