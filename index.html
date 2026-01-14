@@ -1,96 +1,73 @@
-HTML
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vehicle Landing Challenge</title>
+    <title>Sales Blitz Contest</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 600px; margin: 40px auto; padding: 20px; background: #f0f2f5; }
-        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: #1a73e8; border-bottom: 3px solid #1a73e8; padding-bottom: 10px; margin-top: 0; }
-        .scenario { background: #fffde7; padding: 20px; border-left: 5px solid #fbc02d; margin: 20px 0; font-style: italic; color: #444; }
-        label { font-weight: bold; display: block; margin-top: 15px; color: #333; }
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 14px; }
-        textarea { height: 100px; resize: vertical; }
-        button { background: #1a73e8; color: white; padding: 14px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; margin-top: 20px; transition: 0.3s; }
-        button:hover { background: #1557b0; }
-        #status { text-align: center; margin-top: 20px; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h2 { color: #d32f2f; margin-top: 0; }
+        .objection-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin-bottom: 20px; font-style: italic; font-weight: bold; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        textarea { height: 120px; resize: vertical; }
+        button { width: 100%; background: #2e7d32; color: white; border: none; padding: 15px; border-radius: 6px; font-size: 18px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1b5e20; }
+        .footer { font-size: 12px; color: #777; text-align: center; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Vehicle Landing Challenge</h2>
-    
-    <div class="scenario">
-        <strong>CUSTOMER PROFILE:</strong><br>
-        "Meet "Elena"
-The Devoted Urbanite
-
-The Profile: Elena is a 34-year-old freelance graphic designer who recently "totaled" her beloved Toyota C-HR. She is devastated because she adored its edgy, "transformer-like" styling and how easy it was to whip into tight downtown parking spots. She’s now in the market for a replacement, but she’s feeling stuck.
-
-The Conflict: Elena’s life has changed slightly since she bought her last car; she’s now doing more "prop styling" for her photo shoots, which means she's constantly hauling bulky backdrops, light stands, and vintage furniture. While she loved her C-HR, she remembers the frustration of the tiny rear windows (which she called "portholes") and the fact that she had to "Tetris" her gear into the trunk because of the sloping roofline.
-
-The Constraints:
-
-Size Phobia: Her brother suggested a RAV4, but she immediately shot it down. To her, the RAV4 feels like a "mom-tank"—too bulky for her lifestyle and too hard to park in her apartment’s narrow garage.
-
-Tech Aversion: She is adamant about no hybrids. She mistakenly believes that a hybrid means "another thing to plug in at night," and she doesn't have a charger at her complex. She wants a traditional gas engine that she can "just gas up and go."
-
-The Look: She wants something that doesn't look "boring" or "generic," but she secretly needs more visibility and actual trunk space for her growing business."
+    <div id="setup">
+        <h2 id="title">Daily Objection Blitz</h2>
+        <p>The best response wins! Today's objection is:</p>
+        <div class="objection-box" id="objection">"I'm just looking."</div>
     </div>
 
-    <label>Salesperson Name:</label>
-    <input type="text" id="userName" placeholder="Your Name">
+    <form id="contestForm">
+        <label for="name">Salesperson Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name..." required>
 
-    <label>Recommended Stock Number:</label>
-    <input type="text" id="stockNumber" placeholder="Ex: P5542A">
+        <label for="response">Your Best Rebuttal</label>
+        <textarea id="response" name="response" placeholder="Write your winning response here..." required></textarea>
 
-    <label>Why is this the right vehicle for them?</label>
-    <textarea id="notes" placeholder="Explain your logic (towing capacity, features, price, etc.)"></textarea>
-
-    <button onclick="submitData()">Submit Response</button>
-    
-    <div id="status"></div>
+        <button type="submit" id="submitBtn">Submit to Blitz Leaderboard</button>
+    </form>
+    <p class="footer">Results are logged and emailed to management at 4:00 PM.</p>
 </div>
 
 <script>
-    function submitData() {
-        // --- PASTE YOUR GOOGLE WEB APP URL BELOW ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzkkQbA00OeLspSk4NpgIf5FD0SIFyYRpAuP6KqwvIddajqfeefs0n4tdrHkAIl3eC/exec";
-        
-        const name = document.getElementById('userName').value;
-        const stock = document.getElementById('stockNumber').value;
-        const notes = document.getElementById('notes').value;
-        const status = document.getElementById('status');
+    const scriptURL = 'INSERT_YOUR_GOOGLE_SCRIPT_URL_HERE';
+    const form = document.getElementById('contestForm');
+    const btn = document.getElementById('submitBtn');
 
-        if (!name || !stock || !notes) {
-            status.innerHTML = "⚠️ Please fill out all three fields.";
-            status.style.color = "orange";
-            return;
-        }
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerText = 'Sending...';
 
-        status.innerHTML = "Sending to Manager...";
-        status.style.color = "blue";
+        // Prepare data including the current objection for the sheet
+        const formData = new FormData(form);
+        formData.append('objection_type', document.getElementById('objection').innerText);
+        formData.append('timestamp', new Date().toLocaleString());
 
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userName: name, stockNumber: stock, notes: notes })
-        }).then(() => {
-            status.innerHTML = "✅ Submitted! Good luck with the deal.";
-            status.style.color = "green";
-            document.getElementById('userName').value = "";
-            document.getElementById('stockNumber').value = "";
-            document.getElementById('notes').value = "";
-        }).catch(err => {
-            status.innerHTML = "❌ Error connecting to server.";
-            status.style.color = "red";
-        });
-    }
+        fetch(scriptURL, { method: 'POST', body: formData})
+            .then(response => {
+                alert('Success! Your response has been logged for the 4pm draw.');
+                form.reset();
+                btn.disabled = false;
+                btn.innerText = 'Submit to Blitz Leaderboard';
+            })
+            .catch(error => {
+                alert('Error! Check your connection or Script URL.');
+                btn.disabled = false;
+                btn.innerText = 'Submit to Blitz Leaderboard';
+            });
+    });
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
